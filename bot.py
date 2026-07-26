@@ -5,7 +5,6 @@ import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import yt_dlp
 
-# خادم وهمي لإبقاء الخدمة تعمل على Render
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
@@ -19,7 +18,6 @@ def run_http_server():
 
 threading.Thread(target=run_http_server, daemon=True).start()
 
-# التوكن الخاص بك
 BOT_TOKEN = "8635974959:AAHkFUwW5A91w8vG-v-IjznD0OUId1TOuAc"
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -60,6 +58,11 @@ def process_download(call):
         'outtmpl': output_filename,
         'maxfilesize': 50 * 1024 * 1024,
         'quiet': True,
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['ios', 'android']
+            }
+        }
     }
 
     if is_mp3:
