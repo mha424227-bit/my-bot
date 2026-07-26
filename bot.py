@@ -1,9 +1,24 @@
 import os
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import yt_dlp
 
-BOT_TOKEN = "ضع_التوكن_هنا"
+class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot is running!")
+
+def run_http_server():
+    port = int(os.environ.get("PORT", 8080))
+    server = HTTPServer(('0.0.0.0', port), SimpleHTTPRequestHandler)
+    server.serve_forever()
+
+threading.Thread(target=run_http_server, daemon=True).start()
+
+BOT_TOKEN = "8635974959:AAHkFUwW5A91w8vG-v-IjznD0OUId1T0uAc"
 bot = telebot.TeleBot(BOT_TOKEN)
 
 user_links = {}
